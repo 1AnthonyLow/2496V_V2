@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "PID.h"
 #include "util.h"
 #include "main.h"
 #include <math.h>
@@ -9,11 +10,11 @@ void move(float lpwr, float rpwr) {
     right = rpwr;
 }
 
-void moveTo(float target, int duration, int exitTime, int powerCap) {
-    const float kP = 3.4;
+void moveTo(float target, int timeout) {
+    const float kP = 3.4; // 3.4
     const float kI = 0.00001; //0.00001
-    const float kD = 2.1;
-    const float kJ = 0;
+    const float kD = 2.1; //2.1
+    const float kJ = 3;
 
     float error = 0;
     float integral = 0;
@@ -50,8 +51,8 @@ void moveTo(float target, int duration, int exitTime, int powerCap) {
         //if (output > powerCap) output = powerCap;
 
         if (fabs(error) < 1) {
-            x += 10; // Increase x by 10
-            if (x >= exitTime) { 
+            x ++; // Increase x by 10
+            if (x >= 10) { 
                 break; 
             }
         }
@@ -59,32 +60,32 @@ void moveTo(float target, int duration, int exitTime, int powerCap) {
 
         move(output - correction, output + correction);
 
+        if(timer.getTime() > timeout){
+            break;
+        }
+
         if(controller.get_digital(DIGITAL_UP)) break;
         //if (timer.getTime() > duration) break;
     }
+    move(0,0);
 }
 
-void turnTo(float target, int duration, int exitTime, int powerCap) {
-    float kP;
-    float kI;
-    float kD;
+void turnTo(float target, int duration, int powerCap) {
+    float kP = 2;
+    float kI = 0;
+    float kD = 0;
+    
     float error = 0;
     float integral = 0;
+    
     float derivative;
     float output;
     float prevError;
     float initial = imu.get_heading();
     float heading;
+   
     int x = 0;
-    float delta = fabs(target - initial);
-    std::vector<float> constants;
-
-    if      (delta <=  30) constants = {0,0,0};  
-    else if (delta <=  60) constants = {0,0,0}; 
-    else if (delta <=  90) constants = {0,0,0}; 
-    else if (delta <= 120) constants = {0,0,0}; 
-    else if (delta <= 150) constants = {0,0,0}; 
-    else if (delta <= 180) constants = {0,0,0}; 
+    int printTimer = 0;
 
     reset();
 
@@ -106,12 +107,18 @@ void turnTo(float target, int duration, int exitTime, int powerCap) {
         if (output > powerCap) output = powerCap;
 
         if (error < 1) x++;
-        if (x > exitTime) break;
+        if (x >= 10) break;
 
         move(output, -output);
 
+        if (!(printTimer % 5)) {
+            controller.print(0, 0, "%f", heading);
+        }
+        printTimer += 1;
+
         if (timer.getTime() > duration) break;
     }
+    move(0,0);
 }
 
 void arc(float radius, float theta, std::string dir) {
@@ -147,3 +154,52 @@ void arc(float radius, float theta, std::string dir) {
     }
 }
 
+float heading_init;
+void absTurn(float abstarget, int timeout){
+    Timer timer;
+    float voltage;
+    float position;
+    float turnKP;
+    float turnKI;
+    float turnKD;
+    int count = 0;
+
+    int printTimer = 0;
+    float printPos = 0;
+    controller.clear();
+
+    turnKP = 1.1;
+    turnKI = 0.04;
+    turnKD = 5.2;
+
+    PID absrotate(turnKP, turnKI, turnKD);
+    absrotate.resetVars();
+    float turn_start_pos = imu.get_heading();
+    timer.startTime();
+
+    while(true){
+        position = fmod(imu.get_rotation() - heading_init, 360);
+        voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK, TURN_MAX_INTEGRAL);
+        move(voltage,-voltage);
+
+        if (!(printTimer % 5)) {
+        controller.print(0,0, "%f", position);
+        controller.print(1,0, "%f", abstarget);
+        }
+        printTimer += 1;
+        
+        if (std::abs(abstarget - position) <= 0.75){
+        count++;
+        }
+
+        // if(count >= 10){
+        //     break;
+        // }
+
+        if(timer.getTime() > timeout){
+            break;
+        }
+        pros::delay(10);
+    }
+    move(0,0);
+}

@@ -9,5 +9,5 @@ void test() {
 	rm.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 	rb.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
-    moveTo(1700, 4000, 250, 100);
+    moveTo(1700, 4000);
 }

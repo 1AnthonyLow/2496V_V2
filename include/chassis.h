@@ -5,10 +5,11 @@
 
 void move(float lpwr, float rpwr);
 
-void moveTo(float target, int duration, int exitTime, int powerCap);
+void moveTo(float target, int timeout);
 
-void turnTo(float target, int duration, int exitTime, int powerCap);
+void turnTo(float target, int duration, int powerCap = 127);
 
 void arc(float radius, int theta, std::string dir);
 
+void absTurn(float abstarget, int timeout);
 #endif
