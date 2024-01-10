@@ -154,6 +154,18 @@ void arc(float radius, float theta, std::string dir) {
     }
 }
 
+float absKP(double turn_distance){
+    return (9.1353*pow(10,-9))*pow(turn_distance,4) + (-0.00000445865)*pow(turn_distance,3) + (0.000789503)*pow(turn_distance,2) + (-0.0619252)*turn_distance + 3.08139;
+}
+
+float absKD(double turn_distance){
+    return (-7.7559*pow(10,-9))*pow(turn_distance,4) + (0.00000317886)*pow(turn_distance, 3) + (-0.000387428)*pow(turn_distance, 2) + (0.00817919)*turn_distance + 5.8674;
+}
+
+float absKI(double turn_distance){
+    return (-3.7659*pow(10,-9))*pow(turn_distance,4) + (0.00000169813)*pow(turn_distance,3) + (-0.000257537)*pow(turn_distance,2) + (0.0145666)*(turn_distance) + -0.190512;
+}
+
 float heading_init;
 void absTurn(float abstarget, int timeout){
     Timer timer;
@@ -168,11 +180,56 @@ void absTurn(float abstarget, int timeout){
     float printPos = 0;
     controller.clear();
 
-    turnKP = 1.1;
-    turnKI = 0.04;
-    turnKD = 5.2;
+    // float imu_greater = imu.get_heading();
 
-    PID absrotate(turnKP, turnKI, turnKD);
+    // if(imu_greater > 180){
+    //     imu_greater = imu_greater - 180;
+    // }
+
+    // float turn_distance = std::abs(abstarget - imu_greater);
+
+    if (std::abs(abstarget-imu.get_rotation()) <= 30){
+        turnKP = 1.83;
+        turnKI = 0.055;
+        turnKD = 5.75;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 45){
+        turnKP = 1.5;
+        turnKI = 0.085;
+        turnKD = 6;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 60){
+        turnKP = 1.38;
+        turnKI = 0.081;
+        turnKD = 5.3;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 90){
+        turnKP = 1.26;
+        turnKI = 0.01;
+        turnKD = 5.3;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 120){
+        turnKP = 1.19;
+        turnKI = 0.01;
+        turnKD = 5.2;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 135){
+        turnKP = 1.18;
+        turnKI = 0.025;
+        turnKD = 5.2;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 150){
+        turnKP = 1.14;
+        turnKI = 0.008;
+        turnKD = 5.1;
+    }
+    else if(std::abs(abstarget-imu.get_rotation()) <= 180){
+        turnKP = 1.1;
+        turnKI = 0.04;
+        turnKD = 5.2;
+    }
+    
+    PID absrotate(turnKP, turnKI, turnKD); // turnKP, turnKI, turnKD
     absrotate.resetVars();
     float turn_start_pos = imu.get_heading();
     timer.startTime();

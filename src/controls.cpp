@@ -23,33 +23,35 @@ void driver() {
     lAxis = controller.get_analog(ANALOG_LEFT_Y);
     rAxis = controller.get_analog(ANALOG_RIGHT_Y);
 
-    if(std::abs(rAxis) > 2){
-        if(rAxis > 0){
-            rpwr = pow(1.03,(rAxis+70))-8;
-        }
-        else{
-            rpwr = -1*pow(1.03,(-1*rAxis+70))+8.4;
-        }
-    }
-    else{
-        rpwr = 0;
-    }
+    move(lAxis,rAxis);
+
+    // if(std::abs(rAxis) > 2){
+    //     if(rAxis > 0){
+    //         rpwr = pow(1.03,(rAxis+70))-8;
+    //     }
+    //     else{
+    //         rpwr = -1*pow(1.03,(-1*rAxis+70))+8.4;
+    //     }
+    // }
+    // else{
+    //     rpwr = 0;
+    // }
    
-    if(std::abs(lAxis) > 2){
-        if(lAxis > 0){
-            lpwr = pow(1.03,(lAxis+70))-8;
-        }
-        else{
-            lpwr = -1*pow(1.03,(-1*lAxis+70))+8.4;
-        }
-    }
-    else{
-        lpwr = 0;
-    }
-    move(lpwr,rpwr);
+    // if(std::abs(lAxis) > 2){
+    //     if(lAxis > 0){
+    //         lpwr = pow(1.03,(lAxis+70))-8;
+    //     }
+    //     else{
+    //         lpwr = -1*pow(1.03,(-1*lAxis+70))+8.4;
+    //     }
+    // }
+    // else{
+    //     lpwr = 0;
+    // }
+    // move(lpwr,rpwr);
 
     if(controller.get_digital(DIGITAL_L2)){
-        intake.move(-127);
+        intake.move(127);
         if(controller.get_digital(DIGITAL_R2)){
             vert_wings.set_value(true);
         }
@@ -58,7 +60,7 @@ void driver() {
         }
     }
     else if(controller.get_digital(DIGITAL_L1)){
-        intake.move(127);
+        intake.move(-127);
         if(controller.get_digital(DIGITAL_R1)){
             horiz_wings.set_value(true);
         }
@@ -81,7 +83,7 @@ void driver() {
     }
 
     if(controller.get_digital(DIGITAL_LEFT)){
-        moveTo(1000, 5000);
+        absTurn(180, 5000);
     }
 
 
