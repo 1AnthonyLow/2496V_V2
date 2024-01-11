@@ -75,7 +75,7 @@ void driver() {
     if(controller.get_digital_new_press(DIGITAL_B)){
         hang_state = !hang_state;
         bar_hang.set_value(hang_state);
-    }
+    }   
 
     if(controller.get_digital_new_press(DIGITAL_DOWN)){
         side_hang_state = !side_hang_state;

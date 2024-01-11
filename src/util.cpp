@@ -1,4 +1,5 @@
 #include "robot.h"
+#include "main.h"
 
 bool L1;
 bool L2;
