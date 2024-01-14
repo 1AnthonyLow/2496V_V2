@@ -2,5 +2,8 @@
 #define AUTONS_H_
 
 void test();
+void rightsideQual();
+void leftsideQual();
+void rightSideElims();
 
 #endif

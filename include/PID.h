@@ -2,6 +2,9 @@
 
 #define TURN_MAX_INTEGRAL 127
 #define TURN_INTEGRAL_KICK 5
+
+#define STRAIGHT_MAX_INTEGRAL 200
+#define STRAIGHT_INTEGRAL_KICK 50
 class PID {
 public:
   float error = 0;

@@ -2,9 +2,10 @@
 #include "robot.h"
 #include "controls.h"
 #include "chassis.h"
+#include "autons.h"
 
 void on_center_button() {
-
+	horiz_wings.set_value(true);
 }
 
 void initialize() {
@@ -13,7 +14,7 @@ void initialize() {
 	bar_hang.set_value(false);
 	side_hang.set_value(false);
 	vert_wings.set_value(false);
-	horiz_wings.set_value(false);
+	horiz_wings.set_value(true);
 }
 
 void disabled() {}
@@ -21,7 +22,7 @@ void disabled() {}
 void competition_initialize() {}
 
 void autonomous() {
-	absTurn(90, 2000);
+	rightSideElims();
 }
 
 void opcontrol() {

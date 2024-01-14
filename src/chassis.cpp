@@ -1,3 +1,4 @@
+#include "display/lv_misc/lv_task.h"
 #include "robot.h"
 #include "PID.h"
 #include "util.h"
@@ -14,7 +15,7 @@ void moveTo(float target, int timeout) {
     const float kP = 3.4; // 3.4
     const float kI = 0.00001; //0.00001
     const float kD = 2.1; //2.1
-    const float kJ = 3;
+    const float kJ = 7;
 
     float error = 0;
     float integral = 0;
@@ -259,4 +260,60 @@ void absTurn(float abstarget, int timeout){
         pros::delay(10);
     }
     move(0,0);
+}
+
+void moveTest(float target, int timeOut, float power_cap){
+    float encoder_average;
+    float voltage;
+    float currPos = 0;
+    int printTimer = 0;
+    float imuInit;
+    float heading;
+    int count = 0;
+
+    float moveKp = 1.2;
+    float moveKI = 0.15; // 0.2
+    float moveKD = 3.2; // 2.7
+
+    PID straight(moveKp, moveKI, moveKD);
+
+    reset();
+    controller.clear();
+    straight.resetVars();
+    imuInit = imu.get_rotation();
+
+    Timer timer;
+    while(true){
+        encoder_average = (lb.get_position() + rb.get_position()) / 2;
+
+        heading = imuInit - imu.get_rotation();
+        heading = heading * 6;
+        
+        currPos = target - encoder_average;
+        if(!(printTimer % 5)){
+            controller.print(0,0,"%f", currPos);
+        }
+        printTimer += 1;
+
+        voltage = straight.calc(target, encoder_average, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
+
+        if(std::abs(voltage) > power_cap){
+            voltage = power_cap * voltage / std::abs(voltage);
+        }
+
+        move(voltage + heading, voltage - heading);
+
+        if(timer.getTime() > timeOut){
+            break;
+        }
+        if (std::abs(target - encoder_average) <= 0.8){
+            count++; 
+        }
+        if (count >= 10){
+            break;
+        }
+        pros::delay(10);
+    }
+    move(0,0);
+
 }

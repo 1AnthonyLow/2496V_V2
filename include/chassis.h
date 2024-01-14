@@ -11,5 +11,6 @@ void turnTo(float target, int duration, int powerCap = 127);
 
 void arc(float radius, int theta, std::string dir);
 
+void moveTest(float target, int timeout, float power_cap = 127);
 void absTurn(float abstarget, int timeout);
 #endif

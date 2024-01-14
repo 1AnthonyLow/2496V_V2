@@ -3,13 +3,16 @@
 #include "robot.h"
 #include "chassis.h"
 #include "autons.h"
-//#include "util.h"
+// #include "util.cpp"
+#include "util.h"
 //#include <cmath>
 
 bool vert_wings_state = false;
 bool horz_wings_state = false;
 bool hang_state = false;
 bool side_hang_state = false;
+bool slapperState = false;
+bool slapPower = true;
 
 int abs_sgn(double input){
     return input/std::abs(input);
@@ -53,6 +56,7 @@ void driver() {
     if(controller.get_digital(DIGITAL_L2)){
         intake.move(127);
         if(controller.get_digital(DIGITAL_R2)){
+            slapPower = false;
             vert_wings.set_value(true);
         }
         else{
@@ -62,6 +66,7 @@ void driver() {
     else if(controller.get_digital(DIGITAL_L1)){
         intake.move(-127);
         if(controller.get_digital(DIGITAL_R1)){
+            slapPower = false;
             horiz_wings.set_value(true);
         }
         else{
@@ -69,8 +74,22 @@ void driver() {
         }
     }
     else{
+        slapPower = true;
         intake.move(0);
     }
+    
+    if(slapPower == true){
+        if(controller.get_digital_new_press(DIGITAL_R1)){
+            slapper.move(127);
+        }
+        if(controller.get_digital_new_press(DIGITAL_R2)){
+            slapper.move(0);
+        }
+    }
+    else{
+        slapper.move(0);
+    }
+    
 
     if(controller.get_digital_new_press(DIGITAL_B)){
         hang_state = !hang_state;
@@ -85,6 +104,35 @@ void driver() {
     if(controller.get_digital(DIGITAL_LEFT)){
         absTurn(180, 5000);
     }
+
+    // if(controller.get_digital(DIGITAL_L2) && controller.get_digital(DIGITAL_R2)){
+    //     horiz_wings.set_value(!horz_wings_state);
+    // }
+
+    // if(controller.get_digital(DIGITAL_L1) && controller.get_digital(DIGITAL_R1)){
+    //     vert_wings.set_value(!vert_wings_state);
+    // }
+
+    // Timer timer;
+    // if(controller.get_digital_new_press(DIGITAL_A)){
+    //     slapperState = !slapperState;
+    // }
+    // if(slapperState == true){
+    //     slapper.move(127);
+    // }
+    // else if(controller.get_digital_new_press(DIGITAL_Y)){
+    //     timer.startTime();
+    //     while (timer.getTime() < 250){
+    //         slapper.move(127);
+    //     }
+    //     slapper.move(0);
+    // }
+    // else if(controller.get_digital(DIGITAL_R2)){
+    //     slapper.move(127);
+    // }
+    // else{
+    //     slapper.move(0);
+    // }
 
 
     /*if(L2) intake.move(127);

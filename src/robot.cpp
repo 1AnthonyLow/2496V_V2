@@ -18,7 +18,7 @@ pros::Motor rb(12, MOTOR_GEARSET_06, false, MOTOR_ENCODER_DEGREES);
 pros::Motor_Group left({lf, lm, lb});
 pros::Motor_Group right({rf, rm, rb});
 
-pros::Motor slapper(1, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
+pros::Motor slapper(2, MOTOR_GEARSET_36, false, MOTOR_ENCODER_DEGREES);
 
 pros::Motor intake(10, MOTOR_GEARSET_18, false, pros::E_MOTOR_ENCODER_DEGREES);
 
