@@ -44,12 +44,13 @@ void rightsideQual(){
 }
 
 void leftsideQual(){
-	// intake.move(-127);
+	intake.move(-127);
 	pros::delay(200);
 	intake.move(127);
 	vert_wings.set_value(true);
-	absTurn(-45, 500);
+	absTurn(-60, 500);
 	intake.move(0);
+	vert_wings.set_value(false);
 	absTurn(-20, 500);
 	pros::delay(200);
 	intake.move(-127);
@@ -60,7 +61,8 @@ void leftsideQual(){
 	absTurn(-45, 500);
 	moveTest(-1350, 1000);
 	absTurn(90, 900);
-	moveTest(1500, 1000);
+	intake.move(-127);
+	moveTest(1400, 1000);
 }
 
 void rightSideElims(){
@@ -93,12 +95,29 @@ void rightSideElims(){
 	intake.move(0);
 	absTurn(135, 800);
 	intake.move(-127);
-	// pros::delay(200);
+	pros::delay(200);
 	intake.move(0);
 	absTurn(80, 700);
 	intake.move(127);
-	moveTest(1000, 800);
+	moveTest(1200, 800);
 	intake.move(0);
 	absTurn(180, 1000);
+	intake.move(-127);
 	moveTest(3000, 1200);
+}
+
+void leftsideElims(){
+	intake.move(-127);
+	pros::delay(200);
+	intake.move(127);
+	moveTest(2700, 1200);
+	intake.move(0);
+	absTurn(-90, 800);
+	vert_wings.set_value(true);
+	moveTest(-2500, 1000);
+	intake.move(-127);
+	moveTest(1600, 1200);
+	vert_wings.set_value(false);
+	intake.move(0);
+
 }

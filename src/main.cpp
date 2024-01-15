@@ -17,12 +17,13 @@ void initialize() {
 	horiz_wings.set_value(true);
 }
 
-void disabled() {}
+void disabled() { 
+}
 
 void competition_initialize() {}
 
 void autonomous() {
-	rightSideElims();
+	leftsideElims();
 }
 
 void opcontrol() {

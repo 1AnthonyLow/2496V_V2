@@ -8,7 +8,7 @@
 //#include <cmath>
 
 bool vert_wings_state = false;
-bool horz_wings_state = false;
+bool horz_wings_state = true;
 bool hang_state = false;
 bool side_hang_state = false;
 bool slapperState = false;
@@ -67,12 +67,12 @@ void driver() {
         intake.move(-127);
         if(controller.get_digital(DIGITAL_R1)){
             slapPower = false;
-            horiz_wings.set_value(true);
-        }
-        else{
             horiz_wings.set_value(false);
         }
-    }
+        else{
+            horiz_wings.set_value(true);
+        }
+    } //keep up the good work :)
     else{
         slapPower = true;
         intake.move(0);
@@ -101,9 +101,18 @@ void driver() {
         side_hang.set_value(side_hang_state);
     }
 
-    if(controller.get_digital(DIGITAL_LEFT)){
-        absTurn(180, 5000);
-    }
+    // if(controller.get_digital_new_press(DIGITAL_RIGHT)){
+    //     leftsideElims();
+    // }
+    //     move(-50, -5);
+    //     pros::delay(250);
+    //     move(0,0);
+    //     slapper.move(127);
+    // }
+
+    // if(controller.get_digital(DIGITAL_LEFT)){
+    //     absTurn(180, 5000);
+    // }
 
     // if(controller.get_digital(DIGITAL_L2) && controller.get_digital(DIGITAL_R2)){
     //     horiz_wings.set_value(!horz_wings_state);

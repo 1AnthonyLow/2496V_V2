@@ -5,5 +5,6 @@ void test();
 void rightsideQual();
 void leftsideQual();
 void rightSideElims();
+void leftsideElims();
 
 #endif
