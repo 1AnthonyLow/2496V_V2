@@ -6,5 +6,6 @@ void rightsideQual();
 void leftsideQual();
 void rightSideElims();
 void leftsideElims();
+void skills();
 
 #endif

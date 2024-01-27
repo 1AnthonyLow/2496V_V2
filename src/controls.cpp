@@ -8,7 +8,7 @@
 //#include <cmath>
 
 bool vert_wings_state = false;
-bool horz_wings_state = true;
+bool horz_wings_state = false;
 bool hang_state = false;
 bool side_hang_state = false;
 bool slapperState = false;
@@ -55,40 +55,50 @@ void driver() {
 
     if(controller.get_digital(DIGITAL_L2)){
         intake.move(127);
-        if(controller.get_digital(DIGITAL_R2)){
-            slapPower = false;
-            vert_wings.set_value(true);
-        }
-        else{
-            vert_wings.set_value(false);
-        }
     }
     else if(controller.get_digital(DIGITAL_L1)){
         intake.move(-127);
-        if(controller.get_digital(DIGITAL_R1)){
-            slapPower = false;
-            horiz_wings.set_value(false);
-        }
-        else{
-            horiz_wings.set_value(true);
-        }
     } //keep up the good work :)
     else{
-        slapPower = true;
         intake.move(0);
     }
-    
-    if(slapPower == true){
-        if(controller.get_digital_new_press(DIGITAL_R1)){
-            slapper.move(127);
-        }
-        if(controller.get_digital_new_press(DIGITAL_R2)){
-            slapper.move(0);
-        }
+
+    if(controller.get_digital(DIGITAL_R1)){
+        horiz_wings.set_value(true);
     }
     else{
+        horiz_wings.set_value(false);
+    }
+    
+    if(controller.get_digital(DIGITAL_R2)){
+        vert_wings.set_value(true);
+    }
+    else{
+        vert_wings.set_value(false);
+    }
+
+    if(controller.get_digital(DIGITAL_A)){
+        slapPower = !slapPower;
+    }
+
+    if(slapPower == true){
+        slapper.move(127);
+    }
+    else if (slapPower == false) {
         slapper.move(0);
     }
+    
+    // if(slapPower == true){
+    //     if(controller.get_digital_new_press(DIGITAL_R1)){
+    //         slapper.move(127);
+    //     }
+    //     if(controller.get_digital_new_press(DIGITAL_R2)){
+    //         slapper.move(0);
+    //     }
+    // }
+    // else{
+    //     slapper.move(0);
+    // }
     
 
     if(controller.get_digital_new_press(DIGITAL_B)){
@@ -101,13 +111,17 @@ void driver() {
         side_hang.set_value(side_hang_state);
     }
 
-    // if(controller.get_digital_new_press(DIGITAL_RIGHT)){
-    //     leftsideElims();
-    // }
-    //     move(-50, -5);
-    //     pros::delay(250);
-    //     move(0,0);
-    //     slapper.move(127);
+    if(controller.get_digital_new_press(DIGITAL_RIGHT)){
+        skills();
+    }
+
+    if(controller.get_digital_new_press(DIGITAL_LEFT)){
+        move(-55, -5);
+        pros::delay(300);
+        move(0,0);
+        slapper.move(127);
+    }
+
     // }
 
     // if(controller.get_digital(DIGITAL_LEFT)){

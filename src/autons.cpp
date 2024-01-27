@@ -119,5 +119,42 @@ void leftsideElims(){
 	moveTest(1600, 1200);
 	vert_wings.set_value(false);
 	intake.move(0);
+}
 
+void skills(){
+    move(-55, -5);
+    pros::delay(300);
+    move(0,0);
+    slapper.move(127);
+	pros::delay(27000);
+	slapper.move(0);
+    moveTest(500, 250);
+	absTurn(45, 400);
+	moveTest(900, 400);
+	absTurn(0, 450);
+	moveTest(3000, 1200);
+	absTurn(-40, 400);
+	horiz_wings.set_value(true);
+	moveTest(1500, 1000);
+	intake.move(-127);
+	horiz_wings.set_value(false);
+	moveTest(400, 200);
+	absTurn(-90, 600);
+	moveTest(1200,700);
+	
+	moveTest(-500, 300);
+	absTurn(-180, 600);
+	moveTest(2500, 1200);
+	absTurn(-90, 600);
+	moveTest(1000, 500);
+	absTurn(-180, 600);
+	vert_wings.set_value(true);
+	moveTest(-1500, 900);
+	vert_wings.set_value(false);
+	moveTest(1500, 900);
+	absTurn(-90, 700);
+	moveTest(1000, 800);
+	absTurn(-180, 800);
+	vert_wings.set_value(true);
+	moveTest(-1500, 800);
 }
