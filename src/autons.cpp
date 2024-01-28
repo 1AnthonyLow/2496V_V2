@@ -62,7 +62,7 @@ void leftsideQual(){
 	moveTest(-1350, 1000);
 	absTurn(90, 900);
 	intake.move(-127);
-	moveTest(1400, 1000);
+	moveTest(1300, 1000);
 }
 
 void rightSideElims(){
@@ -72,12 +72,13 @@ void rightSideElims(){
 	moveTest(1500, 1000);
 	pros::delay(400);
 	intake.move(0);
-	moveTest(-1700, 1000);
+	moveTest(-1600, 1000);
 	absTurn(-45, 750);
 	vert_wings.set_value(true);
 	moveTest(-1200, 800);
 	vert_wings.set_value(false);
-	moveTest(-100, 500);
+	pros::delay(200);
+	moveTest(-300, 500);
 	absTurn(-90, 500);
 	moveTest(-800, 800);
 	pros::delay(200);
@@ -97,13 +98,16 @@ void rightSideElims(){
 	intake.move(-127);
 	pros::delay(200);
 	intake.move(0);
-	absTurn(80, 700);
+	absTurn(70, 700);
 	intake.move(127);
 	moveTest(1200, 800);
 	intake.move(0);
 	absTurn(180, 1000);
 	intake.move(-127);
-	moveTest(3000, 1200);
+	horiz_wings.set_value(true);
+	moveTest(3200, 1200);
+	pros::delay(200);
+	absTurn(0, 400);
 }
 
 void leftsideElims(){
@@ -119,6 +123,9 @@ void leftsideElims(){
 	moveTest(1600, 1200);
 	vert_wings.set_value(false);
 	intake.move(0);
+	pros::delay(200);
+	moveTest(-200, 400);
+	absTurn(-180,700);
 }
 
 void skills(){

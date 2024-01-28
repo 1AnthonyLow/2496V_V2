@@ -12,7 +12,7 @@ bool horz_wings_state = false;
 bool hang_state = false;
 bool side_hang_state = false;
 bool slapperState = false;
-bool slapPower = true;
+bool slapPower = false;
 
 int abs_sgn(double input){
     return input/std::abs(input);
@@ -58,7 +58,7 @@ void driver() {
     }
     else if(controller.get_digital(DIGITAL_L1)){
         intake.move(-127);
-    } //keep up the good work :)
+    } 
     else{
         intake.move(0);
     }
@@ -77,7 +77,7 @@ void driver() {
         vert_wings.set_value(false);
     }
 
-    if(controller.get_digital(DIGITAL_A)){
+    if(controller.get_digital_new_press(DIGITAL_A)){
         slapPower = !slapPower;
     }
 
@@ -112,7 +112,7 @@ void driver() {
     }
 
     if(controller.get_digital_new_press(DIGITAL_RIGHT)){
-        skills();
+        rightSideElims();
     }
 
     if(controller.get_digital_new_press(DIGITAL_LEFT)){
@@ -120,6 +120,8 @@ void driver() {
         pros::delay(300);
         move(0,0);
         slapper.move(127);
+        pros::delay(28000);
+        slapper.move(0);
     }
 
     // }
