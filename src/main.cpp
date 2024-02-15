@@ -1,4 +1,5 @@
 #include "main.h"
+#include "pros/motors.h"
 #include "robot.h"
 #include "controls.h"
 #include "chassis.h"
@@ -11,7 +12,7 @@ void on_center_button() {
 void initialize() {
 	pros::lcd::initialize();
 	imu.reset();
-	bar_hang.set_value(false);
+	PTO.set_value(false);
 	side_hang.set_value(false);
 	vert_wings.set_value(false);
 	horiz_wings.set_value(false);
@@ -23,7 +24,7 @@ void disabled() {
 void competition_initialize() {}
 
 void autonomous() {
-	leftsideElims();
+	absTurn(30, 5000);
 }
 
 void opcontrol() {

@@ -19,8 +19,9 @@ extern pros::Motor_Group left;
 extern pros::Motor_Group right;
 
 extern pros::Motor intake;
+extern pros::Motor mot_hang;
 
-extern pros::ADIDigitalOut bar_hang;
+extern pros::ADIDigitalOut PTO;
 extern pros::ADIDigitalOut side_hang;
 extern pros::ADIDigitalOut vert_wings;
 extern pros::ADIDigitalOut horiz_wings;
