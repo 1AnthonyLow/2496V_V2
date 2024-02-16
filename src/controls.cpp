@@ -11,7 +11,7 @@
 
 bool vert_wings_state = false;
 bool horz_wings_state = false;
-bool PTO_state = false;
+bool bar_hang_state = false;
 bool side_hang_state = false;
 bool slapperState = false;
 bool slapPower = false;
@@ -53,14 +53,9 @@ void driver() {
   // }
   // move(lpwr,rpwr);
 
-  if(controller.get_digital(DIGITAL_R1)){
-    mot_hang.move(127);
-  }
-  else if(controller.get_digital(DIGITAL_R2)){
-    mot_hang.move(-127);
-  }
-  else{
-    mot_hang.move(0);
+  if(controller.get_digital_new_press(DIGITAL_R1)){
+    bar_hang.set_value(!bar_hang_state);
+    bar_hang_state = !bar_hang_state;
   }
 
   if (controller.get_digital(DIGITAL_L2)) {
@@ -71,13 +66,13 @@ void driver() {
     intake.move(0);
   }
 
-  if (controller.get_digital(DIGITAL_DOWN)) {
+  if (controller.get_digital(DIGITAL_R2)) {
     horiz_wings.set_value(true);
   } else {
     horiz_wings.set_value(false);
   }
 
-  if (controller.get_digital_new_press(DIGITAL_UP)) {
+  if (controller.get_digital_new_press(DIGITAL_DOWN)) {
     slapPower = !slapPower;
   }
 
@@ -87,49 +82,13 @@ void driver() {
     slapper.move(0);
   }
 
-  // if(slapPower == true){
-  //     if(controller.get_digital_new_press(DIGITAL_R1)){
-  //         slapper.move(127);
-  //     }
-  //     if(controller.get_digital_new_press(DIGITAL_R2)){
-  //         slapper.move(0);
-  //     }
-  // }
-  // else{
-  //     slapper.move(0);
-  // }
-
   if (controller.get_digital_new_press(DIGITAL_B)) {
-    PTO.set_value(!PTO_state);
-    PTO_state = !PTO_state;
-  }
-
-  if (PTO_state == true){
-    mot_hang.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    lf.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    lm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    lb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    rf.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    rm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    rb.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-  }
-  else{
-    mot_hang.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    lf.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    lm.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    lb.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    lf.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    lf.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-    lf.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  }
-
-  if (controller.get_digital_new_press(DIGITAL_X)) {
     side_hang_state = !side_hang_state;
     side_hang.set_value(side_hang_state);
   }
 
   if (controller.get_digital_new_press(DIGITAL_RIGHT)) {
-    moveTest(2000,6000);
+    moveTest(2000, 6000);
   }
 
   if (controller.get_digital_new_press(DIGITAL_LEFT)) {

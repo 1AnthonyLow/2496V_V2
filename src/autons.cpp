@@ -47,10 +47,10 @@ void leftsideQual(){
 	intake.move(-127);
 	pros::delay(200);
 	intake.move(127);
-	vert_wings.set_value(true);
+	//side_hang.set_value(true);
 	absTurn(-60, 500);
 	intake.move(0);
-	vert_wings.set_value(false);
+	//zzside_hang.set_value(false);
 	absTurn(-20, 500);
 	pros::delay(200);
 	intake.move(-127);

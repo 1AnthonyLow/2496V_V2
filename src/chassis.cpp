@@ -6,7 +6,6 @@
 #include <math.h>
 #include <vector>
 
-
 void move(float lpwr, float rpwr) {
   left = lpwr;
   right = rpwr;
@@ -202,43 +201,25 @@ void absTurn(float abstarget, int timeout) {
   float printPos = 0;
   controller.clear();
 
-  // float imu_greater = imu.get_heading();
-
-  // if(imu_greater > 180){
-  //     imu_greater = imu_greater - 180;
-  // }
-
-  // float turn_distance = std::abs(abstarget - imu_greater);
-
-  if (std::abs(abstarget-imu.get_rotation()) <= 30){
-      turnKP = 1.79;
-      turnKI = 0.01;
-      turnKD = 6.7;
-  }
-  else if(std::abs(abstarget-imu.get_rotation()) <= 45){
-      turnKP = 1.565;
-      turnKI = 0.016;
-      turnKD = 7.55;
-  }
-  else if(std::abs(abstarget-imu.get_rotation()) <= 60){
-      turnKP = 1.49;
-      turnKI = 0.01;
-      turnKD = 8.2;
-  }
-  else if(std::abs(abstarget-imu.get_rotation()) <= 90){
-      turnKP = 1.425;
-      turnKI = 0.01;
-      turnKD = 8.5;
-  }
-  else if(std::abs(abstarget-imu.get_rotation()) <= 135){
-      turnKP = 1.13;
-      turnKI = 0.015;
-      turnKD = 6;
-  }
-  else if(std::abs(abstarget-imu.get_rotation()) <= 180){
-      turnKP = 1.15;
-      turnKI = 0.008;
-      turnKD = 7.9;
+  if (std::abs(abstarget - imu.get_rotation()) <= 45) {
+    turnKP = 1.48;
+    turnKI = 0.004;
+    turnKD = 6.2;
+  } 
+  else if (std::abs(abstarget - imu.get_rotation()) <= 90) {
+    turnKP = 1.31;
+    turnKI = 0.01;
+    turnKD = 6.7;
+  } 
+  else if (std::abs(abstarget - imu.get_rotation()) <= 135) {
+    turnKP = 1.07;
+    turnKI = 0.0134;
+    turnKD = 5.5;
+  } 
+  else if (std::abs(abstarget - imu.get_heading()) <= 180) {
+    turnKP = 0.91;
+    turnKI = 0.006;
+    turnKD = 3.6;
   }
 
   PID absrotate(turnKP, turnKI, turnKD); // turnKP, turnKI, turnKD
@@ -248,7 +229,8 @@ void absTurn(float abstarget, int timeout) {
 
   while (true) {
     position = fmod(imu.get_rotation() - heading_init, 360);
-    voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK, TURN_MAX_INTEGRAL);
+    voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK,
+                             TURN_MAX_INTEGRAL);
     move(voltage, -voltage);
 
     if (!(printTimer % 5)) {
@@ -261,8 +243,8 @@ void absTurn(float abstarget, int timeout) {
       count++;
     }
 
-    if(count >= 10){
-        break;
+    if (count >= 10) {
+      break;
     }
 
     if (timer.getTime() > timeout) {
@@ -282,9 +264,9 @@ void moveTest(float target, int timeOut, float power_cap) {
   float heading;
   int count = 0;
 
-  float moveKp = 0.9;
-  float moveKI = 0.1; // 0.1
-  float moveKD = 3.5;  // 3.7
+  float moveKp = 1.04;
+  float moveKI = 0.05; 
+  float moveKD = 2.6;  
 
   PID straight(moveKp, moveKI, moveKD);
 
@@ -306,8 +288,7 @@ void moveTest(float target, int timeOut, float power_cap) {
     }
     printTimer += 1;
 
-    voltage = straight.calc(target, encoder_average, STRAIGHT_INTEGRAL_KICK,
-                            STRAIGHT_MAX_INTEGRAL);
+    voltage = straight.calc(target, encoder_average, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
 
     if (std::abs(voltage) > power_cap) {
       voltage = power_cap * voltage / std::abs(voltage);

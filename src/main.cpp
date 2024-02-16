@@ -12,7 +12,7 @@ void on_center_button() {
 void initialize() {
 	pros::lcd::initialize();
 	imu.reset();
-	PTO.set_value(false);
+	//bar_hang.set_value(false);
 	side_hang.set_value(false);
 	vert_wings.set_value(false);
 	horiz_wings.set_value(false);
@@ -24,7 +24,7 @@ void disabled() {
 void competition_initialize() {}
 
 void autonomous() {
-	absTurn(30, 5000);
+	leftsideQual();
 }
 
 void opcontrol() {
