@@ -134,6 +134,14 @@ void turnTo(float target, int duration, int powerCap) {
   move(0, 0);
 }
 
+void arcTurn(float leftPower, float rightPower, float duration){
+  left.move(leftPower);
+  right.move(rightPower);
+  pros::delay(duration);
+  left.move(0);
+  right.move(0);
+}
+
 void arc(float radius, float theta, std::string dir) {
   float curr;
   float error;

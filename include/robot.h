@@ -22,7 +22,6 @@ extern pros::Motor intake;
 
 extern pros::ADIDigitalOut bar_hang;
 extern pros::ADIDigitalOut side_hang;
-extern pros::ADIDigitalOut vert_wings;
 extern pros::ADIDigitalOut horiz_wings;
 
 extern pros::Imu imu;

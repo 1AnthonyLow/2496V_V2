@@ -9,7 +9,6 @@
 #include "util.h"
 // #include <cmath>
 
-bool vert_wings_state = false;
 bool horz_wings_state = false;
 bool bar_hang_state = false;
 bool side_hang_state = false;
@@ -88,7 +87,7 @@ void driver() {
   }
 
   if (controller.get_digital_new_press(DIGITAL_RIGHT)) {
-    moveTest(2000, 6000);
+    leftsideQual();
   }
 
   if (controller.get_digital_new_press(DIGITAL_LEFT)) {
@@ -96,8 +95,10 @@ void driver() {
     pros::delay(300);
     move(0, 0);
     slapper.move(127);
-    pros::delay(28000);
-    slapper.move(0);
+  }
+  
+  if (controller.get_digital_new_press(DIGITAL_UP)) {
+    skills();
   }
 
 
