@@ -3,6 +3,7 @@
 #include "main.h"
 #include "robot.h"
 #include "util.h"
+#include <cmath>
 #include <math.h>
 #include <vector>
 
@@ -134,7 +135,7 @@ void turnTo(float target, int duration, int powerCap) {
   move(0, 0);
 }
 
-void arcTurn(float leftPower, float rightPower, float duration){
+void arcTurn(float leftPower, float rightPower, float duration) {
   left.move(leftPower);
   right.move(rightPower);
   pros::delay(duration);
@@ -213,18 +214,15 @@ void absTurn(float abstarget, int timeout) {
     turnKP = 1.48;
     turnKI = 0.004;
     turnKD = 6.2;
-  } 
-  else if (std::abs(abstarget - imu.get_rotation()) <= 90) {
+  } else if (std::abs(abstarget - imu.get_rotation()) <= 90) {
     turnKP = 1.31;
     turnKI = 0.01;
     turnKD = 6.7;
-  } 
-  else if (std::abs(abstarget - imu.get_rotation()) <= 135) {
+  } else if (std::abs(abstarget - imu.get_rotation()) <= 135) {
     turnKP = 1.07;
     turnKI = 0.0134;
     turnKD = 5.5;
-  } 
-  else if (std::abs(abstarget - imu.get_heading()) <= 180) {
+  } else if (std::abs(abstarget - imu.get_heading()) <= 180) {
     turnKP = 0.91;
     turnKI = 0.006;
     turnKD = 3.6;
@@ -273,8 +271,8 @@ void moveTest(float target, int timeOut, float power_cap) {
   int count = 0;
 
   float moveKp = 1.04;
-  float moveKI = 0.05; 
-  float moveKD = 2.6;  
+  float moveKI = 0.05;
+  float moveKD = 2.6;
 
   PID straight(moveKp, moveKI, moveKD);
 
@@ -296,7 +294,8 @@ void moveTest(float target, int timeOut, float power_cap) {
     }
     printTimer += 1;
 
-    voltage = straight.calc(target, encoder_average, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
+    voltage = straight.calc(target, encoder_average, STRAIGHT_INTEGRAL_KICK,
+                            STRAIGHT_MAX_INTEGRAL);
 
     if (std::abs(voltage) > power_cap) {
       voltage = power_cap * voltage / std::abs(voltage);
@@ -316,4 +315,92 @@ void moveTest(float target, int timeOut, float power_cap) {
     pros::delay(10);
   }
   move(0, 0);
+}
+
+void arcTurnRight(float radius, float theta, int timeout) {
+  float kp = 0;
+  float ki = 0;
+  float kd = 0;
+
+  double righttheta;
+  float correction;
+
+  float voltageRight; 
+  float voltageLeft;
+
+  Timer timer;
+  int printTimer = 0;
+
+  double pi = 3.14159265359;
+
+  float imu_start = imu.get_heading();
+  if (imu_start > 180) {
+    imu_start -= 360;
+  }
+
+  int count = 0;
+
+  controller.clear();
+  PID arcTurnRight (kp, ki, kd);
+  arcTurnRight.resetVars();
+
+  double rightTarget = 0;
+  double leftTarget = 0;
+
+  rightTarget = double((theta / 180) * pi * radius);
+  leftTarget = double((theta / 180)*pi * (radius + 209));
+
+  while(true) {
+    float heading = imu.get_heading() - imu_start;
+    if( theta > 0){
+      if(heading > 300){
+        heading -= 360;
+      }
+    }
+    else{
+      if (heading > 30){
+        heading -= 360;
+      }
+    }
+
+    float positionRight = (rf.get_position() + rb.get_position()) / 2;
+    float positionLeft = (lf.get_position() + lb.get_position()) / 2;
+
+    voltageRight = arcTurnRight.calc(rightTarget, positionRight, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
+    voltageLeft = arcTurnRight.calc(leftTarget, positionLeft, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
+
+    if(std::abs(voltageLeft) > 100){
+      voltageLeft = 100 * (voltageLeft / std::abs(voltageLeft));
+    }
+
+    if(std::abs(voltageRight) > 70){
+      voltageRight = 70 * (voltageRight / std::abs(voltageRight));
+    }
+
+    righttheta = (positionRight * 180) / (pi * radius);
+    correction = (heading = righttheta);
+    correction = correction * 10;
+
+    if(!(printTimer % 5)){
+      controller.print(1,0, "%f", float(heading));
+    }
+    printTimer += 1;
+
+    move(voltageLeft - correction, voltageRight + correction);
+
+    if(timer.getTime() > timeout){
+      break;
+    }
+
+    if ((abs(leftTarget - positionLeft) <= 4) && abs(rightTarget - positionRight) <= 4){
+      count++;
+    }
+
+    if(count > 10){
+      break;
+    }
+
+    pros::delay(10);
+  }
+  move(0,0);
 }

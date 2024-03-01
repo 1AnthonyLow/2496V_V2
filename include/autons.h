@@ -7,5 +7,6 @@ void leftsideQual();
 void rightSideElims();
 void leftsideElims();
 void skills();
+void noAuton();
 
 #endif

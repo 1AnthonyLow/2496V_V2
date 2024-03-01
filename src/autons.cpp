@@ -12,73 +12,33 @@ void test() {
     moveTo(1700, 4000);
 }
 
+void noAuton(){
+	
+}
+
 void rightsideQual(){
 	intake.move(-127);
 	pros::delay(200);
 	intake.move(127);
+	moveTest(300, 500, 100);
 	pros::delay(200);
-	moveTest(200, 200);
-	side_hang.set_value(true);
-	pros::delay(200);
-	moveTest(870, 400);
-	side_hang.set_value(false);
-	pros::delay(200);
-	absTurn(-45, 400);
-	intake.move(-127);
-	moveTest(1000, 600);
-	pros::delay(200);
-	moveTest(-900, 400);
-	pros::delay(200);
-	absTurn(-90, 700);
-	intake.move(127);
-	moveTest(3100, 1500);
-	pros::delay(200);
-	absTurn(44, 700);
-	horiz_wings.set_value(true);
-	intake.move(-127);
-	moveTest(2500, 1200);
 	intake.move(0);
-	horiz_wings.set_value(false);
-	pros::delay(200);
-	moveTest(-300, 300);
-	// absTurn(135, 700);
-	// moveTest(2800, 1800);
-	// absTurn(-135, 700);
-	// intake.move(127);
-	// moveTest(1200, 700);
-	
-
-	
-
-
-	// intake.move(-127);
-	// pros::delay(100);
-	// intake.move(127);
-	// moveTest(1500, 1000);
-	// pros::delay(400);
-	// intake.move(0);
-	// moveTest(-1700, 1000);
-	// absTurn(-45, 750);
+	moveTest(-1700, 1200);
+	// arcTurn(70, 127, 280);
 	// side_hang.set_value(true);
-	// moveTest(-1200, 800);
+	// pros::delay(200);
 	// side_hang.set_value(false);
-	// moveTest(-100, 500);
-	// absTurn(-90, 500);
-	// moveTest(-800, 800);
+	// absTurn(90, 600);
+	// // pros::delay(200);
+	// arcTurn(80, 105, 300);
+	// absTurn(90, 400);
+	// side_hang.set_value(false);
+	// arcTurn(-40, -65, 400);
+	// arcTurn(40, 65, 400);
+	// absTurn(90, 300);
 	// pros::delay(200);
-	// moveTest(500, 800);
-	// pros::delay(300);
-	// absTurn(90, 1000);
 	// intake.move(-127);
-	// pros::delay(300);
-	// moveTest(1000, 800);
-	// pros::delay(200);
-	// moveTest(-300, 500);
-	// absTurn(-45, 750);
-	// moveTest(1600, 1000);
-	// absTurn(0, 500);
-	// moveTest(1300, 750);
-
+	// moveTest(800, 400);
 }
 
 void leftsideQual(){

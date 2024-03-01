@@ -26,4 +26,6 @@ extern pros::ADIDigitalOut horiz_wings;
 
 extern pros::Imu imu;
 
+extern pros::ADIDigitalIn auton_selector;
+
 #endif

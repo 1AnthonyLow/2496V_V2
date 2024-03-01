@@ -76,7 +76,7 @@ void driver() {
   }
 
   if (slapPower == true) {
-    slapper.move(127);
+    slapper.move(110);
   } else if (slapPower == false) {
     slapper.move(0);
   }
@@ -98,7 +98,7 @@ void driver() {
   }
   
   if (controller.get_digital_new_press(DIGITAL_UP)) {
-    skills();
+    rightsideQual();
   }
 
 

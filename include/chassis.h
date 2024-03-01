@@ -14,5 +14,7 @@ void arc(float radius, int theta, std::string dir);
 void moveTest(float target, int timeout, float power_cap = 127);
 void absTurn(float abstarget, int timeout);
 
-void arcTurn(float leftPower, float rightPower, float duration);;
+void arcTurn(float leftPower, float rightPower, float duration);
+
+void arcTurnRight(float radius, float theta, int timeout);
 #endif
