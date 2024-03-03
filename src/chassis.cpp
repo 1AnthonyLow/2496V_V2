@@ -222,7 +222,12 @@ void absTurn(float abstarget, int timeout) {
     turnKP = 1.07;
     turnKI = 0.0134;
     turnKD = 5.5;
-  } else if (std::abs(abstarget - imu.get_heading()) <= 180) {
+  } else if (std::abs(abstarget - imu.get_rotation()) <= 180) {
+    turnKP = 0.91;
+    turnKI = 0.006;
+    turnKD = 3.6;
+  }
+  else {
     turnKP = 0.91;
     turnKI = 0.006;
     turnKD = 3.6;
@@ -235,8 +240,7 @@ void absTurn(float abstarget, int timeout) {
 
   while (true) {
     position = fmod(imu.get_rotation() - heading_init, 360);
-    voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK,
-                             TURN_MAX_INTEGRAL);
+    voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK, TURN_MAX_INTEGRAL);
     move(voltage, -voltage);
 
     if (!(printTimer % 5)) {
@@ -318,14 +322,14 @@ void moveTest(float target, int timeOut, float power_cap) {
 }
 
 void arcTurnRight(float radius, float theta, int timeout) {
-  float kp = 0;
-  float ki = 0;
-  float kd = 0;
+  float kp = 2; // 0.25
+  float ki = 0; // 0
+  float kd = 0; // 0.01
 
   double righttheta;
   float correction;
 
-  float voltageRight; 
+  float voltageRight;
   float voltageLeft;
 
   Timer timer;
@@ -341,24 +345,23 @@ void arcTurnRight(float radius, float theta, int timeout) {
   int count = 0;
 
   controller.clear();
-  PID arcTurnRight (kp, ki, kd);
+  PID arcTurnRight(kp, ki, kd);
   arcTurnRight.resetVars();
 
-  double rightTarget = 0;
-  double leftTarget = 0;
+  double rightTarget;
+  double leftTarget;
 
   rightTarget = double((theta / 180) * pi * radius);
-  leftTarget = double((theta / 180)*pi * (radius + 209));
+  leftTarget = double((theta / 180) * pi * (radius + 209));
 
-  while(true) {
+  while (true) {
     float heading = imu.get_heading() - imu_start;
-    if( theta > 0){
-      if(heading > 300){
+    if (theta > 0) {
+      if (heading > 300) {
         heading -= 360;
       }
-    }
-    else{
-      if (heading > 30){
+    } else {
+      if (heading > 30) {
         heading -= 360;
       }
     }
@@ -366,41 +369,135 @@ void arcTurnRight(float radius, float theta, int timeout) {
     float positionRight = (rf.get_position() + rb.get_position()) / 2;
     float positionLeft = (lf.get_position() + lb.get_position()) / 2;
 
-    voltageRight = arcTurnRight.calc(rightTarget, positionRight, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
-    voltageLeft = arcTurnRight.calc(leftTarget, positionLeft, STRAIGHT_INTEGRAL_KICK, STRAIGHT_MAX_INTEGRAL);
+    voltageRight =
+        arcTurnRight.calc(rightTarget, positionRight, STRAIGHT_INTEGRAL_KICK,
+                          STRAIGHT_MAX_INTEGRAL);
+    voltageLeft =
+        arcTurnRight.calc(leftTarget, positionLeft, STRAIGHT_INTEGRAL_KICK,
+                          STRAIGHT_MAX_INTEGRAL);
 
-    if(std::abs(voltageLeft) > 100){
+    if (std::abs(voltageLeft) > 100) {
       voltageLeft = 100 * (voltageLeft / std::abs(voltageLeft));
     }
 
-    if(std::abs(voltageRight) > 70){
+    if (std::abs(voltageRight) > 70) {
       voltageRight = 70 * (voltageRight / std::abs(voltageRight));
     }
 
     righttheta = (positionRight * 180) / (pi * radius);
-    correction = (heading = righttheta);
+    correction = (heading - righttheta);
     correction = correction * 10;
 
-    if(!(printTimer % 5)){
-      controller.print(1,0, "%f", float(heading));
+    if (!(printTimer % 5)) {
+      controller.print(1, 0, "%f", float(heading));
     }
     printTimer += 1;
 
     move(voltageLeft - correction, voltageRight + correction);
 
-    if(timer.getTime() > timeout){
+    if (timer.getTime() > timeout) {
       break;
     }
 
-    if ((abs(leftTarget - positionLeft) <= 4) && abs(rightTarget - positionRight) <= 4){
+    if ((abs(leftTarget - positionLeft) <= 4) &&
+        abs(rightTarget - positionRight) <= 4) {
       count++;
+    }
+
+    if (count > 10) {
+      break;
+    }
+    pros::delay(10);
+  }
+  move(0, 0);
+}
+
+void arcTurnLeft(float radius, float theta, int timeout) {
+  float kp = 0;
+  float ki = 0;
+  float kd = 0;
+
+  double lefttheta;
+  float correction;
+
+  float voltageRight;
+  float voltageLeft;
+
+  Timer timer;
+  int printTimer = 0;
+  int count = 0;
+
+  double rightTarget;
+  double leftTarget;
+
+  float imu_start = imu.get_heading();
+  if (imu_start > 180) {
+    imu_start -= 360;
+  }
+
+  controller.clear();
+  PID arcTurnLeft(kp, ki, kd);
+  arcTurnLeft.resetVars();
+
+  double pi = 3.14159265359;
+
+  rightTarget = double(theta / 180) * pi * (radius + 209);
+  leftTarget = double(theta / 180) * pi * radius;
+
+  while (true) {
+    float heading = imu.get_heading() - imu_start;
+    if (theta > 0) {
+      if (heading > 300) {
+        heading -= 360;
+      }
+    } else {
+      if (heading > 30) {
+        heading -= 360;
+      }
+    }
+
+    float positionLeft = (lb.get_position() + lf.get_position()) / 2;
+    float positionRight = (rb.get_position() + rf.get_position()) / 2;
+
+    voltageLeft =
+        arcTurnLeft.calc(leftTarget, positionLeft, STRAIGHT_INTEGRAL_KICK,
+                         STRAIGHT_MAX_INTEGRAL);
+    voltageRight =
+        arcTurnLeft.calc(rightTarget, positionRight, STRAIGHT_INTEGRAL_KICK,
+                         STRAIGHT_MAX_INTEGRAL);
+
+    if (std::abs(voltageLeft) > 70) {
+      voltageLeft = 70 * (voltageLeft / std::abs(voltageLeft));
+    }
+
+    if (std::abs(voltageRight) > 100) {
+      voltageRight = 100 * (voltageRight / std::abs(voltageRight));
+    }
+
+    lefttheta = (positionLeft * 180) / (pi * radius);
+    correction = heading - lefttheta;
+    correction *= 10;
+
+    if (!(printTimer % 5)) {
+      controller.print(1, 0, "%f", heading);
+    }
+    printTimer += 1;
+
+    move(voltageLeft - correction, voltageRight + correction);
+
+    if (timer.getTime() > timeout) {
+      break;
+    }
+
+    if (std::abs(leftTarget - positionLeft) <= 4 && std::abs(rightTarget - positionRight)){
+      count ++;
     }
 
     if(count > 10){
       break;
     }
 
-    pros::delay(10);
+    pros::delay(100);
   }
   move(0,0);
 }

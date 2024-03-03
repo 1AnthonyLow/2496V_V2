@@ -84,7 +84,6 @@ void autonomous() {
   // default:
   //   noAuton();
   // }
-
   rightsideQual();
 }
 

@@ -76,7 +76,7 @@ void driver() {
   }
 
   if (slapPower == true) {
-    slapper.move(110);
+    slapper.move(127);
   } else if (slapPower == false) {
     slapper.move(0);
   }
@@ -94,11 +94,11 @@ void driver() {
     move(-55, -5);
     pros::delay(300);
     move(0, 0);
-    slapper.move(127);
+    slapPower = true;
   }
   
   if (controller.get_digital_new_press(DIGITAL_UP)) {
-    rightsideQual();
+    arcTurnRight(1000, 90, 5000);
   }
 
 
