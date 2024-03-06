@@ -27,31 +27,6 @@ void driver() {
 
   move(lAxis, rAxis);
 
-  // if(std::abs(rAxis) > 2){
-  //     if(rAxis > 0){
-  //         rpwr = pow(1.03,(rAxis+70))-8;
-  //     }
-  //     else{
-  //         rpwr = -1*pow(1.03,(-1*rAxis+70))+8.4;
-  //     }
-  // }
-  // else{
-  //     rpwr = 0;
-  // }
-
-  // if(std::abs(lAxis) > 2){
-  //     if(lAxis > 0){
-  //         lpwr = pow(1.03,(lAxis+70))-8;
-  //     }
-  //     else{
-  //         lpwr = -1*pow(1.03,(-1*lAxis+70))+8.4;
-  //     }
-  // }
-  // else{
-  //     lpwr = 0;
-  // }
-  // move(lpwr,rpwr);
-
   if(controller.get_digital_new_press(DIGITAL_R1)){
     bar_hang.set_value(!bar_hang_state);
     bar_hang_state = !bar_hang_state;
@@ -98,15 +73,36 @@ void driver() {
   }
   
   if (controller.get_digital_new_press(DIGITAL_UP)) {
-    arcTurnRight(1000, 90, 5000);
+    skills();
+    //arcTurnLeft(300, -180, 5000);
+    //leftsideQual();
   }
 
 
+  // if(std::abs(rAxis) > 2){
+  //     if(rAxis > 0){
+  //         rpwr = pow(1.03,(rAxis+70))-8;
+  //     }
+  //     else{
+  //         rpwr = -1*pow(1.03,(-1*rAxis+70))+8.4;
+  //     }
+  // }
+  // else{
+  //     rpwr = 0;
   // }
 
-  // if(controller.get_digital(DIGITAL_LEFT)){
-  //     absTurn(180, 5000);
+  // if(std::abs(lAxis) > 2){
+  //     if(lAxis > 0){
+  //         lpwr = pow(1.03,(lAxis+70))-8;
+  //     }
+  //     else{
+  //         lpwr = -1*pow(1.03,(-1*lAxis+70))+8.4;
+  //     }
   // }
+  // else{
+  //     lpwr = 0;
+  // }
+  // move(lpwr,rpwr);
 
   // if(controller.get_digital(DIGITAL_L2) &&
   // controller.get_digital(DIGITAL_R2)){

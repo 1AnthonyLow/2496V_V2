@@ -17,4 +17,6 @@ void absTurn(float abstarget, int timeout);
 void arcTurn(float leftPower, float rightPower, float duration);
 
 void arcTurnRight(float radius, float theta, int timeout);
+void arcTurnLeft(float radius, float theta, int timeout);
+
 #endif

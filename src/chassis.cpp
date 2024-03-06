@@ -226,8 +226,7 @@ void absTurn(float abstarget, int timeout) {
     turnKP = 0.91;
     turnKI = 0.006;
     turnKD = 3.6;
-  }
-  else {
+  } else {
     turnKP = 0.91;
     turnKI = 0.006;
     turnKD = 3.6;
@@ -240,7 +239,8 @@ void absTurn(float abstarget, int timeout) {
 
   while (true) {
     position = fmod(imu.get_rotation() - heading_init, 360);
-    voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK, TURN_MAX_INTEGRAL);
+    voltage = absrotate.calc(abstarget, position, TURN_INTEGRAL_KICK,
+                             TURN_MAX_INTEGRAL);
     move(voltage, -voltage);
 
     if (!(printTimer % 5)) {
@@ -322,9 +322,9 @@ void moveTest(float target, int timeOut, float power_cap) {
 }
 
 void arcTurnRight(float radius, float theta, int timeout) {
-  float kp = 2; // 0.25
-  float ki = 0; // 0
-  float kd = 0; // 0.01
+  float kp = 0.45; // 0.25
+  float ki = 0.02;   // 0
+  float kd = 0.18;   // 0.01
 
   double righttheta;
   float correction;
@@ -344,6 +344,7 @@ void arcTurnRight(float radius, float theta, int timeout) {
 
   int count = 0;
 
+  reset();
   controller.clear();
   PID arcTurnRight(kp, ki, kd);
   arcTurnRight.resetVars();
@@ -352,7 +353,7 @@ void arcTurnRight(float radius, float theta, int timeout) {
   double leftTarget;
 
   rightTarget = double((theta / 180) * pi * radius);
-  leftTarget = double((theta / 180) * pi * (radius + 209));
+  leftTarget = double((theta / 180) * pi * (radius + 409));
 
   while (true) {
     float heading = imu.get_heading() - imu_start;
@@ -376,17 +377,17 @@ void arcTurnRight(float radius, float theta, int timeout) {
         arcTurnRight.calc(leftTarget, positionLeft, STRAIGHT_INTEGRAL_KICK,
                           STRAIGHT_MAX_INTEGRAL);
 
-    if (std::abs(voltageLeft) > 100) {
-      voltageLeft = 100 * (voltageLeft / std::abs(voltageLeft));
+    if (std::abs(voltageLeft) > 120) {
+      voltageLeft = 120 * (voltageLeft / std::abs(voltageLeft));
     }
 
-    if (std::abs(voltageRight) > 70) {
-      voltageRight = 70 * (voltageRight / std::abs(voltageRight));
+    if (std::abs(voltageRight) > 90) {
+      voltageRight = 90 * (voltageRight / std::abs(voltageRight));
     }
 
     righttheta = (positionRight * 180) / (pi * radius);
     correction = (heading - righttheta);
-    correction = correction * 10;
+    correction = correction * 7;
 
     if (!(printTimer % 5)) {
       controller.print(1, 0, "%f", float(heading));
@@ -399,8 +400,8 @@ void arcTurnRight(float radius, float theta, int timeout) {
       break;
     }
 
-    if ((abs(leftTarget - positionLeft) <= 4) &&
-        abs(rightTarget - positionRight) <= 4) {
+    if ((abs(leftTarget - positionLeft) <= 3) &&
+        abs(rightTarget - positionRight) <= 3) {
       count++;
     }
 
@@ -413,9 +414,9 @@ void arcTurnRight(float radius, float theta, int timeout) {
 }
 
 void arcTurnLeft(float radius, float theta, int timeout) {
-  float kp = 0;
-  float ki = 0;
-  float kd = 0;
+  float kp = 0.45;
+  float ki = 0.02; //0.02
+  float kd = 0.18; //0.18
 
   double lefttheta;
   float correction;
@@ -435,14 +436,15 @@ void arcTurnLeft(float radius, float theta, int timeout) {
     imu_start -= 360;
   }
 
+  reset();
   controller.clear();
   PID arcTurnLeft(kp, ki, kd);
   arcTurnLeft.resetVars();
 
   double pi = 3.14159265359;
 
-  rightTarget = double(theta / 180) * pi * (radius + 209);
-  leftTarget = double(theta / 180) * pi * radius;
+  rightTarget = double((theta / 180) * pi * (radius + 409));
+  leftTarget = double((theta / 180) * pi * radius);
 
   while (true) {
     float heading = imu.get_heading() - imu_start;
@@ -466,17 +468,17 @@ void arcTurnLeft(float radius, float theta, int timeout) {
         arcTurnLeft.calc(rightTarget, positionRight, STRAIGHT_INTEGRAL_KICK,
                          STRAIGHT_MAX_INTEGRAL);
 
-    if (std::abs(voltageLeft) > 70) {
-      voltageLeft = 70 * (voltageLeft / std::abs(voltageLeft));
+    if (std::abs(voltageLeft) > 60) {
+      voltageLeft = 60 * (voltageLeft / std::abs(voltageLeft));
     }
 
-    if (std::abs(voltageRight) > 100) {
-      voltageRight = 100 * (voltageRight / std::abs(voltageRight));
+    if (std::abs(voltageRight) > 90) {
+      voltageRight = 90 * (voltageRight / std::abs(voltageRight));
     }
 
     lefttheta = (positionLeft * 180) / (pi * radius);
-    correction = heading - lefttheta;
-    correction *= 10;
+    correction = int(heading + lefttheta);
+    correction = correction * 0.15;
 
     if (!(printTimer % 5)) {
       controller.print(1, 0, "%f", heading);
@@ -489,15 +491,15 @@ void arcTurnLeft(float radius, float theta, int timeout) {
       break;
     }
 
-    if (std::abs(leftTarget - positionLeft) <= 4 && std::abs(rightTarget - positionRight)){
-      count ++;
+    if (std::abs(leftTarget - positionLeft) <= 4 && std::abs(rightTarget - positionRight) <= 4) {
+      count++;
     }
 
-    if(count > 10){
+    if (count > 10) {
       break;
     }
 
-    pros::delay(100);
+    pros::delay(10);
   }
-  move(0,0);
+  move(0, 0);
 }
