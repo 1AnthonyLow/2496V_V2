@@ -66,15 +66,12 @@ void driver() {
   }
 
   if (controller.get_digital_new_press(DIGITAL_LEFT)) {
-    move(-55, -5);
-    pros::delay(300);
-    move(0, 0);
+    arcTurnLeft(-500, 30, 1000);
     slapPower = true;
   }
   
   if (controller.get_digital_new_press(DIGITAL_UP)) {
-    skills();
-    //arcTurnLeft(300, -180, 5000);
+    skills();    //arcTurnLeft(300, -180, 5000);
     //leftsideQual();
   }
 

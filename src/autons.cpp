@@ -86,11 +86,11 @@ void leftsideQual() {
 
   moveTest(2000, 1200);
 
-  //absTurn(-225, 800);
-  // moveTest(500,400);
+  // absTurn(-225, 800);
+  //  moveTest(500,400);
+  //  absTurn(90, 800);
+  // side_hang.set_value(true);
   // absTurn(90, 800);
-  //side_hang.set_value(true);
-  //absTurn(90, 800);
 
   // intake.move(-127);
   // side_hang.set_value(true);
@@ -192,68 +192,134 @@ void rightSideElims() {
 
 void leftsideElims() {
   intake.move(-127);
-  pros::delay(200);
+  moveTest(2000, 1000);
   intake.move(127);
-  moveTest(2700, 1200);
-  intake.move(0);
-  absTurn(-90, 800);
-  side_hang.set_value(true);
-  moveTest(-2500, 1000);
-  intake.move(-127);
-  moveTest(1600, 1200);
-  side_hang.set_value(false);
-  intake.move(0);
-  pros::delay(200);
-  moveTest(-200, 400);
-  absTurn(-180, 700);
+  moveTest(400, 300);
+  moveTest(-200, 200);
+  absTurn(82, 800);
+  horiz_wings.set_value(true);
+  moveTest(1000, 800);
+  moveTest(-200, 200);
+  horiz_wings.set_value(false);
+  absTurn(-160, 800);
+  moveTest(2500,1200);
+
+
+  // moveTest(2700, 1200);
+  // intake.move(0);
+  // absTurn(-90, 800);
+  // side_hang.set_value(true);
+  // moveTest(-2500, 1000);
+  // intake.move(-127);
+  // moveTest(1600, 1200);
+  // side_hang.set_value(false);
+  // intake.move(0);
+  // pros::delay(200);
+  // moveTest(-200, 400);
+  // absTurn(-180, 700);
 }
 
 void skills() {
   intake.move(-127);
   pros::delay(150);
   intake.move(127);
-  arcTurnLeft(-500, 30, 1000);
+  arcTurnLeft(-500, 35, 1000);
   intake.move(0);
-  side_hang.set_value(true);
+  //side_hang.set_value(true);
 
-  //slapper.move(127);
-  //pros::delay(35000);
+  slapper.move(127);
+  pros::delay(30000);
 
   slapper.move(0);
   side_hang.set_value(false);
 
   moveTest(400, 300);
-  absTurn(45, 600);
-  moveTest(600, 300);
-  absTurn(0, 600);
-  moveTest(3300, 1700);
+  absTurn(45, 800);
+  moveTest(650, 400);
+  absTurn(355, 800);
+  moveTest(3700, 2000);
   intake.move(-127);
-  arcTurnLeft(1200, 90, 1700);
-  absTurn(-90, 400);
-
+  side_hang.set_value(true);
+  absTurn(-45, 800);
+  moveTest(1500, 600);
+  absTurn(-90, 800);
+  side_hang.set_value(false);
   moveTest(1200, 600);
-  moveTest(-300, 300);
-
-  intake.move(0);
-  absTurn(-180, 800);
-  moveTest(2300, 1000);
-
-  absTurn(-90, 800);
-  moveTest(800, 600);
-  absTurn(-180, 800);
-  moveTest(-1500, 800);
-  pros::delay(100);
-  moveTest(1500, 800);
-  absTurn(-90, 800);
-  pros::delay(100);
-  moveTest(1000, 800);
-  absTurn(-180, 800);
-  moveTest(-1500, 800);
-  
   pros::delay(150);
-  moveTest(1500, 800);
+
+  moveTest(-700, 300);
+  pros::delay(150);
+  absTurn(-80, 800);
+  moveTest(1200, 800);
+
+  moveTest(-600, 400);
+  intake.move(0);
+
+  absTurn(-185, 900);
+  moveTest(1400, 800);
+  absTurn(-135, 800);
+  horiz_wings.set_value(true);
+  pros::delay(400);
+  horiz_wings.set_value(false);
+  absTurn(-180, 800);
+  moveTest(600, 400);
+  horiz_wings.set_value(true);
+  absTurn(-84, 800);
+
+  moveTest(800, 400);
+  horiz_wings.set_value(false);
+  absTurn(-187, 900);
+  moveTest(-1700, 1000);
+  pros::delay(150);
+  moveTest(1500, 1000);
+
+  absTurn(-90, 800);
+  moveTest(700, 500);
+  absTurn(7, 800);
+  horiz_wings.set_value(true);
+  intake.move(-127);
+  pros::delay(150);
+
+  moveTest(1700, 1000);
+  pros::delay(150);
+  horiz_wings.set_value(false);
+  moveTest(-1700, 1200);
+  intake.move(0);
+
+  absTurn(-94, 800);
+  moveTest(1300, 800);
+  absTurn(30, 800);
+  horiz_wings.set_value(true);
+  intake.move(-127);
+  moveTest(1700, 800);
 
 
+
+
+  // arcTurnLeft(1200, 90, 1700);
+  // absTurn(-90, 400);
+
+  // moveTest(1200, 600);
+  // moveTest(-300, 300);
+
+  // intake.move(0);
+  // absTurn(-180, 800);
+  // moveTest(2300, 1000);
+
+  // absTurn(-90, 800);
+  // moveTest(800, 600);
+  // absTurn(-180, 800);
+  // moveTest(-1500, 800);
+  // pros::delay(100);
+  // moveTest(1500, 800);
+  // absTurn(-90, 800);
+  // pros::delay(100);
+  // moveTest(1000, 800);
+  // absTurn(-180, 800);
+  // moveTest(-1500, 800);
+
+  // pros::delay(150);
+  // moveTest(1500, 800);
 
   // move(-60, -5);
   // pros::delay(300);
@@ -365,3 +431,20 @@ void skills() {
 // 	absTurn(-180, 800);
 // 	side_hang.set_value(true);
 // 	moveTest(-1500, 800);
+
+void safeLeft() {
+  intake.move(-127);
+  pros::delay(150);
+  intake.move(127);
+  side_hang.set_value(true);
+  pros::delay(150);
+  intake.move(0);
+  absTurn(-75, 800);
+  side_hang.set_value(false);
+  pros::delay(250);
+  absTurn(0, 800);
+  moveTest(450, 300);
+  absTurn(-47, 800);
+  intake.move(-127);
+  moveTest(1550, 1200);
+}

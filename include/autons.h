@@ -8,5 +8,6 @@ void rightSideElims();
 void leftsideElims();
 void skills();
 void noAuton();
+void safeLeft();
 
 #endif
