@@ -223,20 +223,22 @@ void skills() {
   intake.move(-127);
   pros::delay(150);
   intake.move(127);
-  arcTurnLeft(-500, 35, 1000);
+  absTurn(-30, 800);
+
+  //arcTurnLeft(-500, 35, 1000);
   intake.move(0);
   //side_hang.set_value(true);
 
   slapper.move(127);
-  pros::delay(30000);
+  pros::delay(10000);
 
   slapper.move(0);
   side_hang.set_value(false);
 
-  moveTest(400, 300);
+  moveTest(300, 300);
   absTurn(45, 800);
-  moveTest(650, 400);
-  absTurn(355, 800);
+  moveTest(575, 400);
+  absTurn(-5, 1000);
   moveTest(3700, 2000);
   intake.move(-127);
   side_hang.set_value(true);
@@ -264,6 +266,7 @@ void skills() {
   absTurn(-180, 800);
   moveTest(600, 400);
   horiz_wings.set_value(true);
+  pros::delay(150);
   absTurn(-84, 800);
 
   moveTest(800, 400);
