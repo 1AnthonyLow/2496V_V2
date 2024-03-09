@@ -9,5 +9,6 @@ void leftsideElims();
 void skills();
 void noAuton();
 void safeLeft();
+void sixBall();
 
 #endif

@@ -503,3 +503,65 @@ void arcTurnLeft(float radius, float theta, int timeout) {
   }
   move(0, 0);
 }
+
+void stop_motors(){
+    left.brake();
+    right.brake();
+   }
+
+void imuTurn(double degrees) //left needs more power
+   {
+   	int localTime = 0;
+   	if(degrees < 0)
+   	{
+   		imu.set_heading(350);
+   	}
+   	else
+   	{
+   		imu.set_heading(10);
+   	}
+
+   	float kP = 9.0; // 
+    float kI = 0.0;//
+   	float kD = 0.2; //
+   	double target = imu.get_heading() + degrees;
+   	double error = target - imu.get_heading(); // -90
+   	double lastError = error;
+   	int power = 0;
+    int powerAdj;
+   	double integral = 0.0;
+   	double derivative = 0.0;
+    int time = 0;
+    int count = 0;
+    int timeout = 0;
+
+   	    while(abs(error) > 0.5 || time < 700){//abs(error) > 0.5 && time <= 6000){ //initially 0.5 & 2000 wait time   bs(error) > 0.08 || time <= 4000     3000 7:19
+        powerAdj = power * 0.1405; //10/21/22: 0.1405 (turns a very tiny amount in only one direction (lined up straight just a little back farher than it should be))        0.141 <= seems good 10/19 <= 0.140(shifts much less but still a small bit in both directions)     10/18 values tested: .149, .142, .13, .127, .125, .11, .1, .05, .03 (all value changes to the right) (still shifts a little in both axis)
+   		error = target - imu.get_heading();
+        /*
+        if (error > 0.03){
+            count++
+        }
+        */
+   		if(abs(error) < 15) integral += error / 200;
+   		derivative = (error - lastError) * 200;
+   		power = error * kP + integral * kI + derivative * kD;
+   		lastError = error;
+   		lf.move(power + powerAdj); lb.move((power + powerAdj)); rf.move(- (power)); rb.move(- (power));
+        //LF.move(power + powerAdj); LB.move((power + powerAdj)); RF.move(- power); RB.move(- power);
+   		pros::delay(10);//5
+        controller.print(1, 0, "err: %lf", error);
+        //controller.print(0, 0, "err: %d", time);
+        if((abs(error) < 0.5)){
+          time += 10;
+        }
+        else{
+          time = 0;
+        }
+        timeout += 10;
+        if(timeout > 1300){
+          break;
+        }
+    }
+   	stop_motors();
+   }

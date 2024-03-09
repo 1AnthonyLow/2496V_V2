@@ -59,9 +59,11 @@ void competition_initialize() {
   //   pros::delay(10);
   //   timer++;
   // }
+  intake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
 void autonomous() {
+  intake.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   // switch (selectedAuto) {
   // case 0:
   //   noAuton();
@@ -84,10 +86,12 @@ void autonomous() {
   // default:
   //   noAuton();
   // }
-  rightsideQual();
+  //rightsideQual();
+  sixBall();
 }
 
 void opcontrol() {
+  imu.set_heading(0);
   while (true) {
     driver();
     pros::delay(20);

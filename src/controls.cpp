@@ -71,7 +71,8 @@ void driver() {
   }
   
   if (controller.get_digital_new_press(DIGITAL_UP)) {
-    skills();
+    //sixBall();
+    //skills();
         //arcTurnLeft(300, -180, 5000);
     //leftsideQual();
   }

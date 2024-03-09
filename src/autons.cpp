@@ -219,6 +219,42 @@ void leftsideElims() {
   // absTurn(-180, 700);
 }
 
+void sixBall(){
+  pros::delay(100);
+  intake.move(127);
+  //moveTest(1700, 1000);
+  moveTest(200, 300);
+  moveTest(-1700, 1000);
+  intake.move(0);
+  imuTurn(147);
+  //moveTest(390, 800, 50);
+  //imuTurn(-47);
+  side_hang.set_value(true);
+  intake.move(-127);
+  moveTest(1000, 1200, 70);
+  imuTurn(-213);//-45
+  //pros::delay(500);
+  side_hang.set_value(false);
+  //imuTurn(-168);
+  moveTest(-1200, 700);
+  //pros::delay(200);
+  moveTest(400, 300);
+  imuTurn(85);
+  intake.move(175);
+  moveTest(2500, 1500);
+  intake.move(-127);
+  imuTurn(135);//140
+  //pros::c::delay(400);
+  imuTurn(-92);
+  intake.move(127);
+  moveTest(1200, 1000);
+  imuTurn(120);
+  intake.move(-127);
+  horiz_wings.set_value(true);
+  moveTest(2600, 2000);
+
+}
+
 void skills() {
   intake.move(-127);
   pros::delay(150);

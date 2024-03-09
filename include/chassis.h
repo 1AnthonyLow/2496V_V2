@@ -19,4 +19,7 @@ void arcTurn(float leftPower, float rightPower, float duration);
 void arcTurnRight(float radius, float theta, int timeout);
 void arcTurnLeft(float radius, float theta, int timeout);
 
+void stop_motors();
+void imuTurn(double degrees);
+
 #endif
