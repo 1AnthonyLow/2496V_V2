@@ -259,14 +259,16 @@ void skills() {
   intake.move(-127);
   pros::delay(150);
   intake.move(127);
-  absTurn(-30, 800);
+  move(-100,0);
+  pros::delay(190);
+  move(0,0);
 
   //arcTurnLeft(-500, 35, 1000);
   intake.move(0);
   //side_hang.set_value(true);
 
   slapper.move(127);
-  pros::delay(10000);
+  pros::delay(30000);
 
   slapper.move(0);
   side_hang.set_value(false);
@@ -275,7 +277,8 @@ void skills() {
   absTurn(45, 800);
   moveTest(575, 400);
   pros::delay(200);
-  absTurn(-7, 1000);
+  absTurn(0, 1000);
+  intake.move(-127);
   moveTest(3700, 2000);
   intake.move(-127);
   absTurn(-45, 800);
@@ -301,7 +304,7 @@ void skills() {
   pros::delay(400);
   horiz_wings.set_value(false);
   absTurn(-180, 800);
-  moveTest(600, 400);
+  moveTest(1000, 600);
   horiz_wings.set_value(true);
   pros::delay(150);
   absTurn(-84, 800);
@@ -311,28 +314,48 @@ void skills() {
   absTurn(-187, 900);
   moveTest(-1700, 1000);
   pros::delay(150);
-  moveTest(1500, 1000);
+  moveTest(1600, 1000);
 
-  absTurn(-90, 800);
+  absTurn(-90, 1000);
   moveTest(700, 500);
   absTurn(7, 800);
   horiz_wings.set_value(true);
   intake.move(-127);
   pros::delay(150);
 
-  moveTest(1700, 1000);
+  moveTest(1900, 1000);
   pros::delay(150);
   horiz_wings.set_value(false);
-  moveTest(-1600, 1200);
+  moveTest(-1700, 1200);
   intake.move(0);
 
-  absTurn(-90, 800);
-  moveTest(1300, 800);
-  absTurn(30, 800);
+  absTurn(-93, 800);
   horiz_wings.set_value(true);
-  intake.move(-127);
   moveTest(1700, 800);
+  absTurn(30, 800);
+  intake.move(-127);
+  moveTest(1900, 1000);
 
+  horiz_wings.set_value(false);
+  moveTest(-1550, 800);
+  intake.move(0);
+  absTurn(-90, 800);
+  moveTest(500, 400);
+  horiz_wings.set_value(true);
+  absTurn(0, 800);
+  moveTest(1100, 800);
+  horiz_wings.set_value(false);
+  absTurn(-90, 800);
+  moveTest(1100, 400);
+  absTurn(37, 800);
+  moveTest(1200, 800);
+  absTurn(90, 800);
+  intake.move(-127);
+  moveTest(1200, 800);
+  moveTest(-800, 400);
+  absTurn(75, 800);
+  pros::delay(150);
+  moveTest(1200, 800);
 
 
 
