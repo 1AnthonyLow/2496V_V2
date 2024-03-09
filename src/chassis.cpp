@@ -249,7 +249,7 @@ void absTurn(float abstarget, int timeout) {
     }
     printTimer += 1;
 
-    if (std::abs(abstarget - position) <= 0.75) {
+    if (std::abs(abstarget - position) <= 1) {
       count++;
     }
 
