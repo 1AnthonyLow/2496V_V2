@@ -87,7 +87,7 @@ void autonomous() {
   //   noAuton();
   // }
   //rightsideQual();
-  sixBall();
+  leftSideRush();
 }
 
 void opcontrol() {

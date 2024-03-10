@@ -10,5 +10,6 @@ void skills();
 void noAuton();
 void safeLeft();
 void sixBall();
+void leftSideRush();
 
 #endif
